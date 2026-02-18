@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUTURO.EXE</title>
+<style>
+  body {
+    margin:0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+  h1 {
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    color: #00ffcc;
+    text-shadow: 2px 2px 8px #000;
+  }
+  p {
+    font-size: 1.3em;
+    margin: 1em 0;
+  }
+  button {
+    margin: 10px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    background: #00ffcc;
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: bold;
+  }
+  button:hover {
+    background: #00bfa0;
+    color: #fff;
+  }
+  input {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+  }
+  .hidden { display: none; }
+  video {
+    margin-top: 20px;
+    width: 90%;
+    max-width: 700px;
+    border: 4px solid #00ffcc;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00ffcc;
+  }
+</style>
+</head>
+<body>
+
+<div id="start">
+  <h1>🎬 FUTURO.EXE</h1>
+  <p>Inserisci il tuo nome per entrare nel tuo film personale:</p>
+  <input type="text" id="nameInput" placeholder="Il tuo nome">
+  <br>
+  <button onclick="startFilm()">INIZIA</button>
+</div>
+
+<div id="scene1" class="hidden">
+  <p id="introText"></p>
+  <button onclick="nextScene()">CONTINUA</button>
+</div>
+
+<div id="scene2" class="hidden">
+  <p>Hai la possibilità di vedere il tuo futuro tra 10 anni. Cosa scegli?</p>
+  <button onclick="choiceYes()">LO GUARDO</button>
+  <button onclick="choiceNo()">NON LO GUARDO</button>
+</div>
+
+<div id="videoScene" class="hidden">
+  <p id="videoTitle"></p>
+  <video id="futureVideo" controls>
+    <source src="futuro.mp4" type="video/mp4">
+    Il tuo browser non supporta il video.
+  </video>
+</div>
+
+<div id="result" class="hidden">
+  <p id="resultText"></p>
+  <button onclick="restart()">RIPROVA</button>
+</div>
+
+<script>
+let userName = "";
+
+function startFilm(){
+  userName = document.getElementById("nameInput").value.trim();
+  if(userName === "") { alert("Scrivi il tuo nome!"); return; }
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("scene1").classList.remove("hidden");
+  document.getElementById("introText").innerHTML =
+      `Anno 2036.<br>${userName}, il futuro ti sta aspettando. Ogni scelta ha un impatto. Sei pronto a scoprire dove ti porterà?`;
+}
+
+function nextScene(){
+  document.getElementById("scene1").classList.add("hidden");
+  document.getElementById("scene2").classList.remove("hidden");
+}
+
+function choiceYes(){
+  document.getElementById("scene2").classList.add("hidden");
+  document.getElementById("videoScene").classList.remove("hidden");
+  document.getElementById("videoTitle").innerHTML = `🎥 ${userName} guarda il proprio futuro...`;
+  document.getElementById("futureVideo").onended = function() {
+      showResult(`Hai visto il tuo futuro, ${userName}.<br>
+      Rifletti sulle tue ambizioni: cosa vuoi davvero raggiungere?<br>
+      Quali paure ti hanno bloccato finora?<br>
+      E quali piccole scelte di oggi possono aiutarti a costruire il domani che sogni?`);
+  };
+}
+
+function choiceNo(){
+  document.getElementById("scene2").classList.add("hidden");
+  showResult(`Hai scelto di non guardare il futuro, ${userName}.<br>
+  Ma il futuro si costruisce giorno per giorno.<br>
+  Pensa a questo:<br>
+  - Quali sono i tuoi sogni più grandi? ✨<br>
+  - Quali paure ti fanno dubitare di te stesso? 😟<br>
+  - Quali passi puoi iniziare a fare oggi per avvicinarti a ciò che desideri?`);
+}
+
+function showResult(message){
+  document.getElementById("videoScene").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("resultText").innerHTML = message;
+}
+
+function restart(){
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("start").classList.remove("hidden");
+  document.getElementById("nameInput").value = "";
+}
+</script>
+
+</body>
+</html>
